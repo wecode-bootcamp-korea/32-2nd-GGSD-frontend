@@ -174,7 +174,7 @@ const JoinBtn = styled.button`
   color: #ff7425;
   background-color: #fffefc;
 
-  :hover {
+  &:hover {
     background-color: #ff9900;
     border: 1px solid #ff9900;
     color: #333;

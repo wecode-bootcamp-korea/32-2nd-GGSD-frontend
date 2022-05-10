@@ -1,20 +1,19 @@
 import React from 'react';
-import { STACK_LIST } from './cardData';
 import styled from 'styled-components';
 
-const Card = () => {
+const Card = ({ data }) => {
   return (
     <CardList>
-      <CardImg src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1776&q=80"></CardImg>
-      <Category>project</Category>
-      <Title>하영이의 클론코딩을 함께하면 너무 재밌어요?</Title>
+      <ImgWrap>
+        <CardImg src={data.thumbnail} />
+      </ImgWrap>
+      <Category>{data.category}</Category>
+      <Title>{data.title}</Title>
       <StackCover>
-        {STACK_LIST.map(stack => {
-          const { id, color, name } = stack;
-
+        {data.stacks.map(stack => {
           return (
-            <Stack key={id} color={color}>
-              {name}
+            <Stack key={stack.stack_id} color={stack.color}>
+              {stack.title}
             </Stack>
           );
         })}
@@ -36,9 +35,16 @@ const CardList = styled.div`
   margin: 0 8px;
 `;
 
-const CardImg = styled.img`
-  border-radius: 8px;
+const ImgWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
   height: 139px;
+  border-radius: 8px;
+`;
+
+const CardImg = styled.img`
   width: 100%;
 `;
 
