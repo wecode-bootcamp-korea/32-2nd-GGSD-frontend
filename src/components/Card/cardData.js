@@ -7,5 +7,4 @@ export const STACK_LIST = [
   { id: 6, name: 'mysql', color: '#4579A1' },
   { id: 7, name: 'django', color: '#0A2E20' },
   { id: 8, name: 'git', color: '#F05032' },
-  { id: 9, name: 'scss', color: '#CF649A' },
 ];

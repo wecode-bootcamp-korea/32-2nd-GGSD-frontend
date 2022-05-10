@@ -1,18 +1,25 @@
 import React from 'react';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 const Card = ({ data }) => {
+  const { thumbnail, title, stacks } = data;
+  const navigate = useNavigate();
+  const goToDetail = () => {
+    navigate(`detail/${data.project_id}`);
+  };
+
   return (
-    <CardList>
+    <CardList onClick={goToDetail}>
       <ImgWrap>
-        <CardImg src={data.thumbnail} />
+        <CardImg src={thumbnail} />
       </ImgWrap>
-      <Category>{data.category}</Category>
-      <Title>{data.title}</Title>
+      <Category>project</Category>
+      <Title>{title}</Title>
       <StackCover>
-        {data.stacks.map(stack => {
+        {stacks.map(stack => {
           return (
-            <Stack key={stack.stack_id} color={stack.color}>
+            <Stack key={stack.id} color={stack.color}>
               {stack.title}
             </Stack>
           );
@@ -32,7 +39,13 @@ const CardList = styled.div`
   display: flex;
   flex-direction: column;
   width: 223px;
-  margin: 0 8px;
+  /* margin: 0 8px; */
+  transform: scale(0.9);
+  transform: all 0.3s;
+  &:hover {
+    transform: scale(1);
+    transition-duration: 0.5s;
+  }
 `;
 
 const ImgWrap = styled.div`
@@ -51,6 +64,7 @@ const CardImg = styled.img`
 const Category = styled.div`
   font-size: 14px;
   margin: 8px 0;
+
   color: #828282;
 `;
 
