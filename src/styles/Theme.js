@@ -12,6 +12,14 @@ const theme = {
   fontColor: '#2D2B2B',
   fontTitle: "'Alata', sans-serif;",
   fontContent: "'Noto Sans KR', sans-serif;",
+  inputBorder: '#e1e1e1',
+  fontColor: '#666666',
+  mainColor: '#EF3900',
+  cssColor: '#0C75B9',
+  htmlColor: '#E54C25',
+  jsColor: '#FFD939',
+  reactColor: '#61DAFB',
+  scssColor: '#CF649A',
 };
 
 export default theme;
