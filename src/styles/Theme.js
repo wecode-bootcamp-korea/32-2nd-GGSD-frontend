@@ -9,7 +9,6 @@ const theme = {
   middleGrey: 'rgba(65,65,65,0.4)',
   deepGrey: '#828282',
   lightOrange: 'rgba(255,195,170,0.3)',
-  fontColor: '#2D2B2B',
   fontTitle: "'Alata', sans-serif;",
   fontContent: "'Noto Sans KR', sans-serif;",
   inputBorder: '#e1e1e1',
