@@ -10,7 +10,6 @@ const LIMIT = 8;
 const List = () => {
   // 메타데이터
   const [metaDataObj, setMetaDataObj] = useState({});
-  //
   const [filterList, setFilterList] = useState([]);
 
   // 상품
@@ -28,7 +27,7 @@ const List = () => {
       });
   }, []);
 
-  // 리스트 데이터
+  // offset 변화에 따라 뿌려지는 데이터 (무한 스크롤)
   useEffect(() => {
     fetch(
       `http://10.58.3.182:8000/projects?&limit=${LIMIT}&offset=${
@@ -41,6 +40,7 @@ const List = () => {
       });
   }, [offset]);
 
+  // 버튼이 클릭될때 마다 화면에 뿌려지는 데이터
   useEffect(() => {
     setOffset(0);
     fetch(
@@ -54,6 +54,7 @@ const List = () => {
       });
   }, [filterList]);
 
+  //
   useEffect(() => {
     if (date.length === 0) return;
 
@@ -72,29 +73,17 @@ const List = () => {
     ]);
   }, [date]);
 
-  console.log(filterList);
   window.onscroll = () => {
     window.innerHeight + document.documentElement.scrollTop >=
       document.documentElement.scrollHeight && setOffset(prev => prev + 1);
   };
 
-  // 스택 버튼
-  const handleClickStack = id => {
-    if (filterList.includes(`stack_ids=${id}`)) {
-      setFilterList(filterList.filter(stack => stack !== `stack_ids=${id}`));
+  // 스택 , 카테고리 버튼
+  const handleFilter = (option, id) => {
+    if (filterList.includes(`${option}=${id}`)) {
+      setFilterList(filterList.filter(stack => stack !== `${option}=${id}`));
     } else {
-      setFilterList(prev => [...prev, `stack_ids=${id}`]);
-    }
-  };
-
-  // 라디오 버튼
-  const handleClickRadio = id => {
-    if (filterList.includes(`category_ids=${id}`)) {
-      setFilterList(
-        filterList.filter(category => category !== `category_ids=${id}`)
-      );
-    } else {
-      setFilterList(prev => [...prev, `category_ids=${id}`]);
+      setFilterList(prev => [...prev, `${option}=${id}`]);
     }
   };
 
@@ -113,17 +102,19 @@ const List = () => {
     }
   };
 
-  // 기간 버튼
+  // 캘린더 오픈시 body scroll막기
   const handleClickCalendar = () => {
     document.body.style.overflow = 'hidden';
     setIsclickCalendar(true);
   };
 
+  // 캘린더 외부 클릭시 닫기
   const outModal = () => {
     document.body.style.overflow = 'auto';
     setIsclickCalendar(false);
   };
 
+  // metaDataObj.stacks 들어오는 데이터가 없다면 "데이터가 없습니다 출력"
   if (!metaDataObj.stacks) return <>데이터가 없습니다</>;
 
   return (
@@ -137,7 +128,7 @@ const List = () => {
             key={idx}
             text={item.title}
             isClicked={filterList.includes(`stack_ids=${item.id}`)}
-            handleClick={() => handleClickStack(item.id)}
+            handleClick={() => handleFilter('stack_ids', item.id)}
           />
         ))}
       </>
@@ -147,15 +138,13 @@ const List = () => {
           <TermBox onClick={handleClickCalendar}>
             {date.length === 0
               ? '기간을 선택해주세요.'
-              : `${date[0]
-                  .toLocaleDateString()
-                  .slice(
-                    0,
-                    date[0].toLocaleDateString().length - 1
-                  )} ~ ${date[1]
-                  .toLocaleDateString()
-                  .slice(0, date[1].toLocaleDateString().length - 1)}`}
+              : `${`${date[0].getFullYear()}-${
+                  date[0].getMonth() + 1
+                }-${date[0].getDate()} ~ ${date[1].getFullYear()}-${
+                  date[1].getMonth() + 1
+                }-${date[1].getDate()}`}`}
           </TermBox>
+
           {isclickCalendar && (
             <Wrap calendar>
               <Calendar
@@ -195,7 +184,7 @@ const List = () => {
               id={category.id}
               type="checkBox"
               isClicked={filterList.includes(category.name)}
-              onClick={() => handleClickRadio(category.id)}
+              onClick={() => handleFilter('category_ids', category.id)}
             />
             <CategoryName htmlFor={category.id}>{category.title}</CategoryName>
           </CategoryBox>
@@ -240,7 +229,9 @@ const Article = styled.div`
   display: ${props => (props.term || props.place ? 'flex' : '')};
   align-items: ${props => (props.term || props.place ? 'center' : '')};
   position: relative;
-  /* top: 50%; */
+
+  // 캘린더 라이브러리 CSS
+
   .react-calendar {
     width: 400px;
     max-width: 100%;
@@ -331,6 +322,7 @@ const Article = styled.div`
 `;
 
 // 프로젝트 기간
+
 const TermBox = styled.div`
   display: flex;
   align-items: center;
@@ -355,8 +347,7 @@ const TermBoxBackground = styled.div`
 const ProjectCardBox = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  width: 970px;
+  justify-content: flex-start;
   margin-top: 50px;
 `;
 
