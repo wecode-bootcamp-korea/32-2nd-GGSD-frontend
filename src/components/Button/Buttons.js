@@ -1,40 +1,39 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import theme from '../../styles/Theme';
 
-const Button = ({ item, isClicked, handleClick }) => {
+const Button = ({ text, isClicked, handleClick }) => {
   return (
     <Btn isClicked={isClicked} onClick={handleClick} type="button">
-      {item.name}
+      {text}
     </Btn>
   );
 };
 
 const Btn = styled.button`
-  ${props => {
-    if (props.isClicked) {
+  ${({ isClicked, theme }) => {
+    if (isClicked) {
       return css`
-        background-color: ${props.theme.mainColor};
-        border: 1px solid ${props.theme.mainColor};
+        background-color: ${theme.mainColor};
+        border: 1px solid ${theme.mainColor};
         color: #fff;
       `;
     } else {
       return css`
         background-color: #fff;
-        border: 1px solid ${props.theme.middleGrey};
-        color: ${props.theme.middleGrey};
+        border: 1px solid ${theme.middleGrey};
+        color: ${theme.middleGrey};
       `;
     }
   }}
+  margin: 0 8px 8px 0;
   padding: 5px 10px;
-  margin-right: 8px;
   border-radius: 20px;
   font-size: 15px;
-  margin-bottom: 8px;
+
   &:hover {
     background-color: white;
-    border: 1px solid ${theme.mainColor};
-    color: ${theme.mainColor};
+    border: 1px solid ${({ theme }) => theme.mainColor};
+    color: ${({ theme }) => theme.mainColor};
   }
 `;
 
