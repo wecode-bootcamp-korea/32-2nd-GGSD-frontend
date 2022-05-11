@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const AdditionalInfo = () => {
-  const [openModalBtn, setOpenModalBtn] = useState(false);
+const AdditionalInfo = ({ toggleHandler }) => {
   const [additionalInfo, setAdditionalInfo] = useState({
     grade: '',
     username: '',
-    position: null,
+    position: '',
   });
-  const [metaData, setMetaData] = useState([]);
+  const [metaData, setMetaData] = useState({});
 
   const { grade, username, position } = additionalInfo;
   const changeBtn = grade && username && position;
@@ -17,19 +16,19 @@ const AdditionalInfo = () => {
     fetch(`http://10.58.3.182:8000/commons/meta`)
       .then(res => res.json())
       .then(data => {
-        setMetaData(data.results);
+        setMetaData(data.results[0]);
       });
   }, []);
 
   const handleBtn = e => {
     e.preventDefault();
-    fetch(`http://10.58.3.182:8000/users/login`, {
+    fetch(`http://10.58.6.119:8000/users/login`, {
       method: 'PATCH',
       headers: { Authorization: localStorage.getItem('token') },
       body: JSON.stringify({
         batch: grade,
         name: username,
-        position_id: position,
+        position_id: Number(position),
       }),
     })
       .then(res => {
@@ -41,19 +40,10 @@ const AdditionalInfo = () => {
         return res.json();
       })
       .then(data => {
-        setOpenModalBtn(false);
-        alert(`🌻 ${data.result.batch}기 ${data.result.name}님 환영합니다 🌻`);
+        alert(`🌻 ${data.RESULT.batch}기 ${data.RESULT.name}님 환영합니다 🌻`);
+        window.location.reload();
       });
-  };
-
-  const openModal = () => {
-    document.body.style.overflow = 'hidden';
-    setOpenModalBtn(true);
-    setAdditionalInfo({
-      grade: '',
-      username: '',
-      position: null,
-    });
+    toggleHandler();
   };
 
   const handleInput = e => {
@@ -77,61 +67,53 @@ const AdditionalInfo = () => {
   };
 
   return (
-    <>
-      <Button onClick={openModal}>Initial</Button>
+    <ModalForm>
+      <GGSDlogo>로고넣기</GGSDlogo>
+      <InitialSetting>
+        <Text>기수</Text>
+        <Input
+          placeholder="00기_숫자로만 작성해주세요"
+          type="text"
+          name="grade"
+          onChange={handleInput}
+          value={additionalInfo.grade || ''}
+        />
+      </InitialSetting>
 
-      {openModalBtn && (
-        <>
-          <ModalForm>
-            <GGSDlogo>로고넣기</GGSDlogo>
-            <InitialSetting>
-              <Text>기수</Text>
-              <Input
-                placeholder="00기_숫자로만 작성해주세요"
-                type="text"
-                name="grade"
-                onChange={handleInput}
-                value={additionalInfo.grade || ''}
-              />
-            </InitialSetting>
+      <InitialSetting>
+        <Text>이름</Text>
+        <Input
+          placeholder="본인 이름"
+          name="username"
+          type="text"
+          onChange={handleInput}
+          value={additionalInfo.username || ''}
+        />
+      </InitialSetting>
 
-            <InitialSetting>
-              <Text>이름</Text>
-              <Input
-                placeholder="본인 이름"
-                name="username"
-                type="text"
-                onChange={handleInput}
-                value={additionalInfo.username || ''}
-              />
-            </InitialSetting>
-
-            <InitialSetting noBottom="noBottom">
-              <Text>포지션</Text>
-              <CheckBoxWrap>
-                {metaData[0].positions.map(data => (
-                  <CheckBox key={data.id}>
-                    <PositionInput
-                      type="radio"
-                      name="position"
-                      id={data.id}
-                      value={data.roll}
-                      onChange={handleInput}
-                    />
-                    <Label htmlFor={data.roll}>{data.roll}</Label>
-                  </CheckBox>
-                ))}
-              </CheckBoxWrap>
-            </InitialSetting>
-            <Warning>* 해당 내용은 변경 불가합니다.</Warning>
-            <JoinBtn disabled={!changeBtn} type="button" onClick={handleBtn}>
-              제출
-            </JoinBtn>
-          </ModalForm>
-          <Modal />
-        </>
-      )}
-    </>
+      <InitialSetting noBottom="noBottom">
+        <Text>포지션</Text>
+        <CheckBoxWrap>
+          {metaData.positions &&
+            metaData.positions.map(data => (
+              <CheckBox key={data.id}>
+                <PositionInput
+                  type="radio"
+                  name="position"
+                  id={data.id}
+                  value={data.roll}
+                  onChange={handleInput}
+                />
+                <Label htmlFor={data.roll}>{data.roll}</Label>
+              </CheckBox>
+            ))}
+        </CheckBoxWrap>
+      </InitialSetting>
+      <Warning>* 해당 내용은 변경 불가합니다.</Warning>
+      <JoinBtn disabled={!changeBtn} type="button" onClick={handleBtn}>
+        제출
+      </JoinBtn>
+    </ModalForm>
   );
 };
 
@@ -141,17 +123,18 @@ const JoinBtn = styled.button`
   margin-top: 50px;
   font-size: 15px;
   border-radius: 10px;
-  border: none;
+  border: 1px solid #ff9900;
   color: #333;
   background-color: #ff9900;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: white;
+  }
 
   &:disabled {
     opacity: 0.5;
   }
-`;
-
-const Button = styled.button`
-  background-color: orange;
 `;
 
 const Warning = styled.p`
@@ -230,18 +213,6 @@ const ModalForm = styled.form`
   border-radius: 10px;
   background-color: white;
   z-index: 100;
-`;
-
-const Modal = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #00000070;
 `;
 
 export default AdditionalInfo;

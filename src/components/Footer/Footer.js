@@ -27,8 +27,6 @@ export default Footer;
 
 const Container = styled.footer`
   display: flex;
-  position: absolute;
-  bottom: 0;
   width: 100%;
   min-width: 975px;
   height: 200px;
