@@ -38,10 +38,11 @@ const StackCover = styled.div`
 const CardList = styled.div`
   display: flex;
   flex-direction: column;
+  flex-basis: 25%;
   width: 223px;
-  /* margin: 0 8px; */
   transform: scale(0.9);
   transform: all 0.3s;
+
   &:hover {
     transform: scale(1);
     transition-duration: 0.5s;
