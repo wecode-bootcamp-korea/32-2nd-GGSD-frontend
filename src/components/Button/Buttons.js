@@ -31,9 +31,21 @@ const Btn = styled.button`
   font-size: 15px;
 
   &:hover {
-    background-color: white;
-    border: 1px solid ${({ theme }) => theme.mainColor};
-    color: ${({ theme }) => theme.mainColor};
+    ${({ isClicked, theme }) => {
+      if (isClicked) {
+        return css`
+          background-color: ${theme.mainColor};
+          border: 1px solid ${theme.mainColor};
+          color: #fff;
+        `;
+      } else {
+        return css`
+          background-color: white;
+          border: 1px solid ${({ theme }) => theme.mainColor};
+          color: ${({ theme }) => theme.mainColor};
+        `;
+      }
+    }}
   }
 `;
 

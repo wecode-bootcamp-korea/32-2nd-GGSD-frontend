@@ -40,7 +40,7 @@ const Main = () => {
     <MainWrap>
       <Carousel>
         <Slider {...option}>
-          {MAIN_CAROUSEL.map(data => (
+          {MAIN_CAROUSEL.map((data, idx) => (
             <CarouselImg key={data.id} src={data.img} alt={data.alt} />
           ))}
         </Slider>
