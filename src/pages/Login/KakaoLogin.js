@@ -20,24 +20,25 @@ const KakaoLogin = () => {
       .then(res => {
         if (res.status !== 200) {
           alert('로그인 실패');
-          navigate('/main');
+          navigate('/');
         } else {
           return res.json();
         }
       })
       .then(res => {
-        fetch('http://10.58.6.119:8000/users/login', {
+        fetch('http://10.58.3.182:8000/users/login', {
           headers: { Authorization: res.access_token },
         })
           .then(res => res.json())
           .then(res => {
             if (res.MESSAGE !== 'SUCCESS') {
               alert('로그인을 다시 시도해 주세요');
-              navigate('/main');
+              navigate('/');
             } else {
+              console.log(res);
               alert('로그인을 성공하셨습니다');
-              localStorage.setItem('token', res.RESULT.access_token);
-              navigate('/main');
+              localStorage.setItem('token', res.access_token);
+              navigate('/');
             }
           });
       });
