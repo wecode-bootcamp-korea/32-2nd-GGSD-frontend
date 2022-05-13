@@ -13,16 +13,17 @@ const AdditionalInfo = ({ toggleHandler }) => {
   const changeBtn = grade && username && position;
 
   useEffect(() => {
-    fetch(`http://10.58.3.182:8000/commons/meta`)
+    fetch(`http://http://10.58.3.182:8000/commons/meta`)
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         setMetaData(data.results[0]);
       });
   }, []);
 
   const handleBtn = e => {
     e.preventDefault();
-    fetch(`http://10.58.6.119:8000/users/login`, {
+    fetch(`http://http://10.58.3.182:8000/users/login`, {
       method: 'PATCH',
       headers: { Authorization: localStorage.getItem('token') },
       body: JSON.stringify({

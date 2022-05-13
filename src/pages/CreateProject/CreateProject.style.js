@@ -7,10 +7,13 @@ const focusNoOutline = css`
 `;
 
 export const CreateForm = styled.form`
-  margin: 0 auto;
+  margin: 50px auto;
   max-width: 650px;
   padding: 75px 3.6%;
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  @media (max-width: 650px) {
+    padding: 75px 8%;
+  }
 `;
 
 export const Wrap = styled.div`
@@ -134,18 +137,17 @@ export const Label = styled.label`
 `;
 
 export const SubLabel = styled.label`
-  display: ${props => props.flex && 'flex'};
-  align-items: ${props => props.flex && 'center'};
+  display: ${({ flex }) => flex && 'flex'};
+  align-items: ${({ flex }) => flex && 'center'};
 `;
 
 export const Name = styled.h3`
-  margin-right: ${props => props.subName && '10px'};
-  margin-bottom: ${props => props.inputTitle && '15px'};
+  margin-right: ${({ subName }) => subName && '10px'};
+  margin-bottom: ${({ inputTitle }) => inputTitle && '15px'};
   font-weight: ${({ subName }) => subName || 800};
   color: ${({ theme }) => theme.fontColor};
 `;
 
-//인풋 모음
 export const RadioBtn = styled.input`
   margin-right: 10px;
   margin-bottom: 15px;
@@ -168,7 +170,7 @@ export const Input = styled.input`
 
 export const FileArea = css`
   width: inherit;
-  height: ${props => (props.isImg ? '400px' : '150px')};
+  height: ${({ isImg }) => (isImg ? '400px' : '150px')};
   cursor: pointer;
 `;
 
@@ -274,7 +276,7 @@ export const CheckPortfolio = styled.input`
 `;
 
 export const PortfolioLabel = styled(Label)`
-  font-size: ${props => (props.isTitle ? '21px' : '16px')};
+  font-size: ${({ isTitle }) => (isTitle ? '21px' : '16px')};
   font-weight: ${({ subName }) => subName || 800};
   color: ${({ theme }) => theme.fontColor};
 `;
@@ -300,7 +302,6 @@ export const SubmitBtn = styled.button.attrs(
       return css`
         background-color: ${({ theme }) => theme.mainColor};
         color: #fff;
-        cursor: pointer;
         :hover {
           opacity: 0.8;
         }

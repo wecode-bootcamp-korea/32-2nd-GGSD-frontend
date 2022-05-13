@@ -14,9 +14,9 @@ const Router = () => {
     <BrowserRouter>
       <Nav />
       <Routes>
-        <Route path="/main" element={<Main />} />
+        <Route path="/" element={<Main />} />
         <Route path="/list" element={<List />} />
-        <Route path="/detail" element={<Detail />} />
+        <Route path="/detail/:id" element={<Detail />} />
         <Route path="/create" element={<CreateProject />} />
         <Route path="/mypage" element={<Mypage />} />
         <Route path="/kakaologin" element={<KakaoLogin />} />
