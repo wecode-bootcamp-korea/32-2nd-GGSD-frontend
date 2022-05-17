@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick/lib/slider';
 import styled from 'styled-components';
 import ProjectCarousel from './ProjectCarousel';
@@ -6,7 +6,11 @@ import { MAIN_CAROUSEL } from './carouselData';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
+const LIMIT = 12;
 const Main = () => {
+  const [deadline, setDeadline] = useState([]);
+  const [newProject, setNewProject] = useState([]);
+
   const option = {
     dots: true,
     infinite: true,
@@ -18,6 +22,19 @@ const Main = () => {
     nextArrow: <NextArrow isTop />,
     prevArrow: <PrevArrow isTop />,
   };
+
+  useEffect(() => {
+    fetch(
+      `http://10.58.3.182:8000/projects?sort=recent_created&limit=${LIMIT}&offset=0`
+    )
+      .then(res => res.json())
+      .then(data => setNewProject(data.results));
+    fetch(
+      `http://10.58.3.182:8000/projects?sort=deadline&limit=${LIMIT}&offset=0`
+    )
+      .then(res => res.json())
+      .then(data => setDeadline(data.results));
+  }, []);
 
   return (
     <MainWrap>
@@ -35,7 +52,7 @@ const Main = () => {
       >
         <BannerImg src="/images/wecodebanner.png" alt="wecodebanner" />
       </Banner>
-      <ProjectCarousel />
+      <ProjectCarousel deadline={deadline} newProject={newProject} />
     </MainWrap>
   );
 };

@@ -1,40 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Slider from 'react-slick/lib/slider';
 import styled from 'styled-components';
 import Card from '../../components/Card/Card';
 
-const LIMIT = 12;
-const ProjectCarousel = () => {
-  const [deadline, setDeadline] = useState([]);
-  const [recommendation, setRecommendation] = useState([]);
-  const [newProject, setNewProject] = useState([]);
-
-  useEffect(() => {
-    fetch(
-      `http://10.58.3.182:8000/projects?sort=recent_created&limit=${LIMIT}&offset=0`
-    )
-      .then(res => res.json())
-      .then(data => setNewProject(data.results));
-  }, []);
-
-  useEffect(() => {
-    fetch(
-      `http://10.58.3.182:8000/projects?sort=deadline&limit=${LIMIT}&offset=0`
-    )
-      .then(res => res.json())
-      .then(data => setDeadline(data.results));
-  }, []);
-
-  useEffect(() => {
-    fetch(
-      `http://10.58.3.182:8000/projects?sort=recent_created&limit=${LIMIT}&offset=0`
-    )
-      .then(res => res.json())
-      .then(data => {
-        setRecommendation(data.results);
-      });
-  }, []);
-
+const ProjectCarousel = ({ newProject, deadline }) => {
   const option = {
     dots: false,
     infinite: true,
@@ -87,15 +56,6 @@ const ProjectCarousel = () => {
       <ProjectCarouselWrap>
         <Slider {...option}>
           {deadline.map(data => (
-            <Card key={data.project_id} data={data} />
-          ))}
-        </Slider>
-      </ProjectCarouselWrap>
-
-      <Title>💟 전체기수 추천</Title>
-      <ProjectCarouselWrap>
-        <Slider {...option}>
-          {recommendation.map(data => (
             <Card key={data.project_id} data={data} />
           ))}
         </Slider>
