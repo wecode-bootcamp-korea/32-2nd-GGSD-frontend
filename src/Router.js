@@ -8,7 +8,6 @@ import List from './pages/List/List';
 import Login from './pages/Login/Login';
 import Main from './pages/Main/Main';
 import Mypage from './pages/MyPage/Mypage';
-import AdditionalInfo from './components/AdditionalInfo/AdditionalInfo';
 
 const Router = () => {
   return (
@@ -22,7 +21,6 @@ const Router = () => {
         <Route path="/create" element={<CreateProject />} />
         <Route path="/mypage" element={<Mypage />} />
       </Routes>
-      <AdditionalInfo />
       <Footer />
     </BrowserRouter>
   );
