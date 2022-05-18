@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 const Card = ({ data }) => {
-  const { thumbnail, title, stacks } = data;
+  const { thumbnail, title, stacks, category } = data;
   const navigate = useNavigate();
   const goToDetail = () => {
-    navigate(`detail/${data.project_id}`);
+    navigate(`${process.env.PUBLIC_URL}/detail/${data.project_id}`);
   };
 
   return (
@@ -14,7 +14,7 @@ const Card = ({ data }) => {
       <ImgWrap>
         <CardImg src={thumbnail} />
       </ImgWrap>
-      <Category>project</Category>
+      <Category>{category}</Category>
       <Title>{title}</Title>
       <StackCover>
         {stacks.map(stack => {
@@ -31,12 +31,13 @@ const Card = ({ data }) => {
 
 const StackCover = styled.div`
   display: flex;
-  width: 100%;
   flex-wrap: wrap;
+  width: 100%;
 `;
 
 const CardList = styled.div`
   display: flex;
+  justify-content: space-between;
   flex-direction: column;
   flex-basis: 25%;
   width: 100%;

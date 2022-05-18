@@ -30,6 +30,11 @@ const Btn = styled.button`
   border-radius: 20px;
   font-size: 15px;
 
+  @media screen and (max-width: 690px) {
+    padding: 1% 30%;
+    width: 80%;
+  }
+
   &:hover {
     ${({ isClicked, theme }) => {
       if (isClicked) {

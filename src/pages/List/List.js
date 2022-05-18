@@ -6,6 +6,8 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
 const LIMIT = 8;
+const MAX_WIDTH = `${690}px`;
+const FOOTER_HEIGHT = 200;
 
 const List = () => {
   // 메타데이터
@@ -36,6 +38,7 @@ const List = () => {
     )
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         setCard(prev => [...prev, ...data.results]);
       });
   }, [offset]);
@@ -54,7 +57,6 @@ const List = () => {
       });
   }, [filterList]);
 
-  //
   useEffect(() => {
     if (date.length === 0) return;
 
@@ -72,9 +74,8 @@ const List = () => {
       `start_recruit=${startDate}&end_recruit=${endDate}`,
     ]);
   }, [date]);
-
   window.onscroll = () => {
-    window.innerHeight + document.documentElement.scrollTop >=
+    window.innerHeight + document.documentElement.scrollTop >
       document.documentElement.scrollHeight && setOffset(prev => prev + 1);
   };
 
@@ -109,11 +110,13 @@ const List = () => {
   };
 
   // 캘린더 외부 클릭시 닫기
-  const outModal = () => {
+  const outModal = e => {
+    if (e.target !== e.currentTarget) return;
     document.body.style.overflow = 'auto';
-    setIsclickCalendar(false);
+    e.target === e.currentTarget && setIsclickCalendar(false);
   };
 
+  console.log(card);
   // metaDataObj.stacks 들어오는 데이터가 없다면 "데이터가 없습니다 출력"
   if (!metaDataObj.stacks) return <>데이터가 없습니다</>;
 
@@ -147,20 +150,21 @@ const List = () => {
 
           {isclickCalendar && (
             <Wrap calendar>
-              <Calendar
-                onChange={setDate}
-                selectRange={true}
-                minDate={new Date()}
-                nextLabel="month >"
-                nextAriaLabel="Go to next month"
-                next2Label="year >"
-                next2AriaLabel="Go to next year"
-                prevLabel="< month"
-                prevAriaLabel="Go to prev month"
-                prev2Label="< year"
-                prev2AriaLabel="Go to prev year"
-              />
-              <TermBoxBackground onClick={outModal} />
+              <TermBoxBackground onClick={outModal}>
+                <Calendar
+                  onChange={setDate}
+                  selectRange={true}
+                  minDate={new Date()}
+                  nextLabel="month >"
+                  nextAriaLabel="Go to next month"
+                  next2Label="year >"
+                  next2AriaLabel="Go to next year"
+                  prevLabel="< month"
+                  prevAriaLabel="Go to prev month"
+                  prev2Label="< year"
+                  prev2AriaLabel="Go to prev year"
+                />
+              </TermBoxBackground>
             </Wrap>
           )}
         </Article>
@@ -207,28 +211,53 @@ const List = () => {
 const Wrap = styled.div`
   margin: 0 auto;
   max-width: 970px;
+
+  @media screen and (max-width: ${MAX_WIDTH}) {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+  }
 `;
 
 const Section = styled.section`
   display: flex;
   justify-content: ${props => props.termplace && 'space-between'};
-  margin-top: ${props => (props.termplace || props.category ? '50px' : '0px')};
+  padding-top: ${props => (props.termplace || props.category ? '50px' : '0px')};
+  @media screen and (max-width: ${MAX_WIDTH}) {
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+  }
 `;
 
 const Title = styled.h3`
-  margin-bottom: ${props => props.stack && '30px'};
-  margin-right: ${props => (props.term || props.place ? '30px' : '0px')};
-  margin-top: ${props => (props.list || props.stack ? '80px' : '0px')};
+  padding-bottom: ${props => props.stack && '30px'};
+  padding-right: ${props => (props.term || props.place ? '30px' : '0px')};
+  padding-top: ${props => (props.list || props.stack ? '80px' : '0px')};
   font-size: ${props =>
     props.term || props.place || props.stack || props.category
       ? '25px'
       : '35px'};
+  @media screen and (max-width: ${MAX_WIDTH}) {
+    text-align: center;
+    padding: 0px;
+    padding-bottom: 10%;
+  }
 `;
 
 const Article = styled.div`
   display: ${props => (props.term || props.place ? 'flex' : '')};
   align-items: ${props => (props.term || props.place ? 'center' : '')};
   position: relative;
+
+  @media screen and (max-width: ${MAX_WIDTH}) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 10%;
+    width: 100%;
+  }
 
   // 캘린더 라이브러리 CSS
 
@@ -241,7 +270,7 @@ const Article = styled.div`
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
     font-family: Arial, Helvetica, sans-serif;
     line-height: 1.125em;
-    position: absolute;
+    position: fixed;
     z-index: 1000;
   }
   .react-calendar__navigation button {
@@ -332,9 +361,16 @@ const TermBox = styled.div`
   border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0.5);
   font-size: 15px;
+
+  @media screen and (max-width: ${MAX_WIDTH}) {
+    width: 100%;
+  }
 `;
 
 const TermBoxBackground = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
@@ -345,14 +381,23 @@ const TermBoxBackground = styled.div`
 `;
 
 const ProjectCardBox = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  margin: 50px auto 0;
+  @media screen and (max-width: 970px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 690px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (max-width: 460px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 const ProjectListWrap = styled.div`
-  width: 970px;
+  max-width: 970px;
   height: 100%;
   margin-top: 70px;
 `;
@@ -362,7 +407,11 @@ const ProjectListWrap = styled.div`
 const CategoryBox = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 15px;
+  margin-left: 10px;
+
+  @media screen and (max-width: ${MAX_WIDTH}) {
+    margin-left: 0px;
+  }
 `;
 
 const CategoryBtn = styled.input``;
@@ -381,6 +430,9 @@ const PlaceBox = styled.select`
   border: 1px solid rgba(0, 0, 0, 0.5);
   font-size: 15px;
   text-align: center;
+  @media screen and (max-width: ${MAX_WIDTH}) {
+    width: 100%;
+  }
 `;
 
 const PlaceOption = styled.option`
