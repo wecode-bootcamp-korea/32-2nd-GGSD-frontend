@@ -15,20 +15,24 @@ const ProjectCarousel = ({ newProject, deadline }) => {
     prevArrow: <PrevArrow />,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 900,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
-          dots: true,
+          dots: false,
+          nextArrow: <NextArrow />,
+          prevArrow: <PrevArrow />,
         },
       },
       {
-        breakpoint: 600,
+        breakpoint: 660,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
           initialSlide: 2,
+          nextArrow: <NextArrow />,
+          prevArrow: <PrevArrow />,
         },
       },
       {
@@ -36,6 +40,8 @@ const ProjectCarousel = ({ newProject, deadline }) => {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          nextArrow: <NextArrow />,
+          prevArrow: <PrevArrow />,
         },
       },
     ],

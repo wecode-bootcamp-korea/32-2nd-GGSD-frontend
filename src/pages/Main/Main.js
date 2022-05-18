@@ -58,21 +58,9 @@ const Main = () => {
 };
 
 const MainWrap = styled.div`
-  width: 970px;
-  margin: 0 auto;
-`;
-
-const Banner = styled.a`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 4% 0;
-`;
-
-const BannerImg = styled.img`
   width: 100%;
-  height: 147px;
-  margin-bottom: 4%;
+  max-width: 970px;
+  margin: 0 auto;
 `;
 
 const Carousel = styled.div`
@@ -80,9 +68,18 @@ const Carousel = styled.div`
   margin-bottom: 8%;
 `;
 
-const CarouselImg = styled.img`
-  height: 280px;
-  width: 280px;
+const CarouselImg = styled.img``;
+
+const Banner = styled.a`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* width: 100%; */
+`;
+
+const BannerImg = styled.img`
+  height: 147px;
+  margin-bottom: 10%;
 `;
 
 const NextArrow = styled.button`
