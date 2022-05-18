@@ -68,7 +68,7 @@ const AdditionalInfo = ({ toggleHandler }) => {
 
   return (
     <ModalForm>
-      <GGSDlogo>로고넣기</GGSDlogo>
+      <GGSDlogo src="/images/logo.png" alt="GGSDlogo"></GGSDlogo>
       <InitialSetting>
         <Text>기수</Text>
         <Input
@@ -196,10 +196,10 @@ const PositionInput = styled.input`
   justify-content: space-between;
 `;
 
-const GGSDlogo = styled.p`
-  font-size: 30px;
-  color: #ff7425;
-  margin-bottom: 40px;
+const GGSDlogo = styled.img`
+  position: relative;
+  bottom: 8%;
+  width: 180px;
 `;
 
 const ModalForm = styled.form`
