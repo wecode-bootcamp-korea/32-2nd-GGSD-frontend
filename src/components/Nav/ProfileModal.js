@@ -9,6 +9,7 @@ const ProfileModal = ({ userInfo, userName }) => {
 
   const logoutHandler = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('batch');
     window.location.reload();
     toggleHandler();
   };
@@ -23,6 +24,7 @@ const ProfileModal = ({ userInfo, userName }) => {
 
   const moveMypage = () => {
     navigate('/mypage');
+    toggleHandler();
   };
 
   return (

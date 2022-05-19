@@ -3,6 +3,7 @@ import useToggle from '../../components/CustomHook/useToggle';
 import StackModal from './StackModal';
 import Button from '../../components/Button/Buttons';
 import styled from 'styled-components';
+import { API } from '../../config';
 
 const StackWrapper = ({
   title,
@@ -15,7 +16,7 @@ const StackWrapper = ({
   const [metaData, setMetaData] = useState([]);
 
   useEffect(() => {
-    fetch('http://10.58.3.182:8000/commons/meta')
+    fetch(`${API.COMMONS}/meta`)
       .then(res => res.json())
       .then(res => setMetaData(res.results[0].stacks));
   }, []);

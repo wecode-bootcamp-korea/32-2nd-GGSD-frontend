@@ -5,6 +5,7 @@ import ProjectCarousel from './ProjectCarousel';
 import { MAIN_CAROUSEL } from './carouselData';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { API } from '../../config';
 
 const LIMIT = 12;
 const Main = () => {
@@ -24,14 +25,10 @@ const Main = () => {
   };
 
   useEffect(() => {
-    fetch(
-      `http://10.58.3.182:8000/projects?sort=recent_created&limit=${LIMIT}&offset=0`
-    )
+    fetch(`${API.PROJECTS}?sort=recent_created&limit=${LIMIT}&offset=0`)
       .then(res => res.json())
       .then(data => setNewProject(data.results));
-    fetch(
-      `http://10.58.3.182:8000/projects?sort=deadline&limit=${LIMIT}&offset=0`
-    )
+    fetch(`${API.PROJECTS}?sort=deadline&limit=${LIMIT}&offset=0`)
       .then(res => res.json())
       .then(data => setDeadline(data.results));
   }, []);
@@ -74,7 +71,6 @@ const Banner = styled.a`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* width: 100%; */
 `;
 
 const BannerImg = styled.img`

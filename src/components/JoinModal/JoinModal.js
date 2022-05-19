@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../Button/Buttons';
 import { API } from '../../config';
+import useLockBodyScroll from '../CustomHook/useLockBodyScroll';
 
 const JoinModal = ({
   title,
@@ -10,10 +11,9 @@ const JoinModal = ({
   beVacancy,
   essentialStacks,
   projectId,
+  toggleHandler,
 }) => {
   const [metaData, setMetaData] = useState({});
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [stackList, setStackList] = useState([]);
   const [userInfo, setUserInfo] = useState({
     git: '',
@@ -22,6 +22,7 @@ const JoinModal = ({
     portfolio: false,
   });
   const { git, stackes, position, portfolio } = userInfo;
+  useLockBodyScroll();
 
   useEffect(() => {
     fetch(`${API.COMMONS}/meta`)
@@ -50,9 +51,9 @@ const JoinModal = ({
   };
 
   const completedFetch = () => {
-    fetch(`${API.JOINPOST}/applies/${projectId}`, {
+    fetch(`${API.JOINPOST}/${projectId}`, {
       method: 'POST',
-      headers: localStorage.getItem('token'),
+      headers: { Authorization: localStorage.getItem('token') },
       body: JSON.stringify({
         project_id: projectId,
         position_id: position,
@@ -95,7 +96,7 @@ const JoinModal = ({
 
   const goToDetail = () => {
     document.body.style.overflow = '';
-    setIsModalOpen(false);
+    toggleHandler(false);
     setUserInfo({
       git: '',
       stackes: setStackList([]),
@@ -104,113 +105,88 @@ const JoinModal = ({
     });
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  if (!metaData.positions) return <>데이터가 없습니다!</>;
+  if (!metaData.positions) return;
 
   return (
     <>
-      <GoToJoin onClick={openModal}>소인 그대와 조인할것이옵니다.</GoToJoin>
-      {isModalOpen && (
-        <Modal>
-          <ModalForm>
-            <ExitBtn type="button" onClick={goToDetail}>
-              ☓
-            </ExitBtn>
-            <ProjectName>
-              <ProjectNameText>프로젝트명 : {title}</ProjectNameText>
-              <ProjectNameText>
-                남은 인원 : FE({feVacancy <= 0 ? 0 : feVacancy}), BE(
-                {beVacancy <= 0 ? 0 : beVacancy})
-              </ProjectNameText>
-              <ProjectNameText>
-                <InnerText>필수 스택 : </InnerText>
-                <StackWrap>
-                  {essentialStacks.map(stack => (
-                    <Stack key={stack.stack_id} color={stack.color}>
-                      {stack.title}
-                    </Stack>
-                  ))}
-                </StackWrap>
-              </ProjectNameText>
-            </ProjectName>
-            <CheckBoxWrap>
-              <Title noMargin="noMargin">* Position</Title>
-              {metaData.positions
-                .slice(0, 2)
-                .reverse()
-                .map(({ id, roll }) => (
-                  <CheckBox key={id}>
-                    <Label htmlFor={id}>
-                      <PositionBtn
-                        type="radio"
-                        id={id}
-                        name="position"
-                        onChange={handleTextChange}
-                        value={id}
-                      />
-                      {roll}
-                    </Label>
-                  </CheckBox>
-                ))}
-            </CheckBoxWrap>
-            <ButtonBox>
-              <Title>* 기술 스택</Title>
-              {metaData.stacks.map(({ id, title }) => (
-                <Button
-                  key={id}
-                  text={title}
-                  isClicked={stackList.includes(id)}
-                  handleClick={() => handleStack(id)}
-                />
+      <ModalForm>
+        <ExitBtn type="button" onClick={goToDetail}>
+          ☓
+        </ExitBtn>
+        <ProjectName>
+          <ProjectNameText>프로젝트명 : {title}</ProjectNameText>
+          <ProjectNameText>
+            남은 인원 : FE({feVacancy <= 0 ? 0 : feVacancy}), BE(
+            {beVacancy <= 0 ? 0 : beVacancy})
+          </ProjectNameText>
+          <ProjectNameText>
+            <InnerText>필수 스택 : </InnerText>
+            <StackWrap>
+              {essentialStacks.map(stack => (
+                <Stack key={stack.stack_id} color={stack.color}>
+                  {stack.title}
+                </Stack>
               ))}
-            </ButtonBox>
-            <GitHub>
-              <Title>* Git 주소</Title>
-              <GitInput
-                name="git"
-                placeholder="깃헙 링크 넣어주삼"
-                onChange={handleTextChange}
-              />
-            </GitHub>
-            <OpenCheckPortfolio>
-              <CheckBox>
-                <Label htmlFor="choicebox">
-                  <ChoiceBtn
-                    type="checkbox"
-                    id="choicebox"
-                    name="choiceBox"
-                    onChange={choicePortfolio}
+            </StackWrap>
+          </ProjectNameText>
+        </ProjectName>
+        <CheckBoxWrap>
+          <Title noMargin="noMargin">* Position</Title>
+          {metaData.positions
+            .slice(0, 2)
+            .reverse()
+            .map(({ id, roll }) => (
+              <CheckBox key={id}>
+                <Label htmlFor={id}>
+                  <PositionBtn
+                    type="radio"
+                    id={id}
+                    name="position"
+                    onChange={handleTextChange}
+                    value={id}
                   />
-                  내 포트폴리오 비공개
+                  {roll}
                 </Label>
               </CheckBox>
-            </OpenCheckPortfolio>
-            <JoinBtn onClick={handleBtn}>apply</JoinBtn>
-          </ModalForm>
-        </Modal>
-      )}
+            ))}
+        </CheckBoxWrap>
+        <ButtonBox>
+          <Title>* 기술 스택</Title>
+          {metaData.stacks.map(({ id, title }) => (
+            <Button
+              key={id}
+              text={title}
+              isClicked={stackList.includes(id)}
+              handleClick={() => handleStack(id)}
+            />
+          ))}
+        </ButtonBox>
+        <GitHub>
+          <Title>* Git 주소</Title>
+          <GitInput
+            name="git"
+            placeholder="깃헙 링크 넣어주삼"
+            onChange={handleTextChange}
+          />
+        </GitHub>
+        <OpenCheckPortfolio>
+          <CheckBox>
+            <Label htmlFor="choicebox">
+              <ChoiceBtn
+                type="checkbox"
+                id="choicebox"
+                name="choiceBox"
+                onChange={choicePortfolio}
+              />
+              내 포트폴리오 비공개
+            </Label>
+          </CheckBox>
+        </OpenCheckPortfolio>
+        <JoinBtn onClick={handleBtn}>apply</JoinBtn>
+      </ModalForm>
     </>
   );
 };
-
-const GoToJoin = styled.button`
-  width: 100%;
-  padding: 16px;
-  margin-top: 16px;
-  border-radius: 3px;
-  font-size: 12px;
-  border: none;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.mainColor};
-    color: #fff;
-    cursor: pointer;
-  }
-`;
 
 const ExitBtn = styled.button`
   border: none;
@@ -353,7 +329,10 @@ const ProjectNameText = styled.div`
 `;
 
 const ModalForm = styled.form`
-  position: relative;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   margin: 0 auto;
   text-align: center;
   padding: 50px;
@@ -361,19 +340,7 @@ const ModalForm = styled.form`
   border: 1px solid #ff9900;
   border-radius: 10px;
   background-color: white;
-`;
-
-const Modal = styled.div`
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 100;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #00000070;
 `;
 
 export default JoinModal;

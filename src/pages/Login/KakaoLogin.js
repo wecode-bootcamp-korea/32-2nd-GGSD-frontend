@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { KAKAO } from '../../config';
 import styled from 'styled-components';
+import { API } from '../../config';
 
 const KakaoLogin = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const KakaoLogin = () => {
         }
       })
       .then(res => {
-        fetch('http://10.58.3.182:8000/users/login', {
+        fetch(`${API.USERS}/login`, {
           headers: { Authorization: res.access_token },
         })
           .then(res => res.json())
@@ -35,10 +36,11 @@ const KakaoLogin = () => {
               alert('로그인을 다시 시도해 주세요');
               navigate('/');
             } else {
-              console.log(res);
               alert('로그인을 성공하셨습니다');
-              localStorage.setItem('token', res.access_token);
+              localStorage.setItem('token', res.results.access_token);
+              localStorage.setItem('batch', res.results.batch);
               navigate('/');
+              window.location.reload();
             }
           });
       });

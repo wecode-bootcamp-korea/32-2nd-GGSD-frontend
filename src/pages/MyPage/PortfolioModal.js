@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { API } from '../../config';
 
 const PortfolioModal = ({ toggleHandler, setPostData, setUserInfo }) => {
   const [formData, setFormData] = useState();
@@ -11,7 +12,7 @@ const PortfolioModal = ({ toggleHandler, setPostData, setUserInfo }) => {
   };
 
   const postPortfolio = () => {
-    fetch(`http://10.58.3.182:8000/commons/file`, {
+    fetch(`${API.COMMONS}/file`, {
       method: 'POST',
       body: formData.thumbnail,
     })

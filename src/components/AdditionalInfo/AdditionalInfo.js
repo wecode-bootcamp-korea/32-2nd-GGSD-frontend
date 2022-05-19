@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { API } from '../../config';
 
 const AdditionalInfo = ({ toggleHandler }) => {
   const [additionalInfo, setAdditionalInfo] = useState({
@@ -13,17 +14,14 @@ const AdditionalInfo = ({ toggleHandler }) => {
   const changeBtn = grade && username && position;
 
   useEffect(() => {
-    fetch(`http://http://10.58.3.182:8000/commons/meta`)
+    fetch(`${API.COMMONS}/meta`)
       .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        setMetaData(data.results[0]);
-      });
+      .then(data => setMetaData(data.results[0]));
   }, []);
 
   const handleBtn = e => {
     e.preventDefault();
-    fetch(`http://http://10.58.3.182:8000/users/login`, {
+    fetch(`${API.USERS}/login`, {
       method: 'PATCH',
       headers: { Authorization: localStorage.getItem('token') },
       body: JSON.stringify({
@@ -41,7 +39,10 @@ const AdditionalInfo = ({ toggleHandler }) => {
         return res.json();
       })
       .then(data => {
-        alert(`🌻 ${data.RESULT.batch}기 ${data.RESULT.name}님 환영합니다 🌻`);
+        localStorage.setItem('batch', true);
+        alert(
+          `🌻 ${data.results.batch}기 ${data.results.name}님 환영합니다 🌻`
+        );
         window.location.reload();
       });
     toggleHandler();

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LoginModal from './LoginModal';
 import ProfileModal from './ProfileModal';
 import SearchCard from './SearchCard';
 import InitialModal from './InitialModal';
+import { API } from '../../config';
 
 const Nav = () => {
   const [searchInput, setSearchInput] = useState({});
@@ -12,22 +13,24 @@ const Nav = () => {
   const [searchOutput, setSearchOutput] = useState([]);
   const [scrollY, setScrollY] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    localStorage.getItem('token') &&
-      fetch(`http://10.58.6.119:8000/users/detail`, {
+    location.pathname !== '/mypage' &&
+      localStorage.getItem('token') &&
+      fetch(`${API.USERS}/detail`, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
       })
         .then(res => res.json())
         .then(res => {
-          setUserInfo(res.RESULT[0]);
+          setUserInfo(res.results[0]);
         });
-  }, []);
+  }, [location]);
 
   useEffect(() => {
-    fetch(`http://10.58.3.182:8000/projects?search=${searchInput.search}`)
+    fetch(`${API.PROJECTS}?search=${searchInput.search}`)
       .then(res => res.json())
       .then(res => setSearchOutput(res.results));
   }, [searchInput]);
@@ -45,7 +48,7 @@ const Nav = () => {
   };
 
   const goMain = () => {
-    navigate('/main');
+    navigate('/');
   };
 
   function handleScroll() {
@@ -90,7 +93,8 @@ const Nav = () => {
           )}
         </LoginWrapper>
       </Wrapper>
-      {localStorage.getItem('token') && !userInfo.batch && <InitialModal />}
+      {localStorage.getItem('token') &&
+        localStorage.getItem('batch') === 'null' && <InitialModal />}
     </Navigation>
   );
 };

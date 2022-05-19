@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import JoinModal from '../../components/JoinModal/JoinModal';
+import JoinWrapper from '../../components/JoinModal/JoinWrapper';
 import { API } from '../../config';
 
 const Detail = () => {
@@ -25,7 +25,6 @@ const Detail = () => {
   } = data;
 
   const params = useParams();
-  console.log(data);
 
   useEffect(() => {
     fetch(`${API.PROJECTS}/${params.id}`)
@@ -111,7 +110,7 @@ const Detail = () => {
         </ContentWrap>
       </DetailInfo>
       <JoinBtnWrap>
-        <JoinModal
+        <JoinWrapper
           projectId={params.id}
           title={title}
           feVacancy={front_vacancy - front_fixed}
