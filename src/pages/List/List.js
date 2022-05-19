@@ -4,10 +4,10 @@ import Button from '../../components/Button/Buttons';
 import Card from '../../components/Card/Card';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import { API } from '../../config';
 
 const LIMIT = 8;
 const MAX_WIDTH = `${690}px`;
-const FOOTER_HEIGHT = 200;
 
 const List = () => {
   // 메타데이터
@@ -22,7 +22,7 @@ const List = () => {
 
   // 메타 데이터
   useEffect(() => {
-    fetch('http://10.58.3.182:8000/commons/meta')
+    fetch(`${API.COMMONS}/meta`)
       .then(res => res.json())
       .then(data => {
         setMetaDataObj(data.results[0]);
@@ -32,13 +32,12 @@ const List = () => {
   // offset 변화에 따라 뿌려지는 데이터 (무한 스크롤)
   useEffect(() => {
     fetch(
-      `http://10.58.3.182:8000/projects?&limit=${LIMIT}&offset=${
+      `${API.PROJECTS}?&limit=${LIMIT}&offset=${
         LIMIT * offset
       }&${filterList.join('&')}`
     )
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         setCard(prev => [...prev, ...data.results]);
       });
   }, [offset]);
@@ -47,7 +46,7 @@ const List = () => {
   useEffect(() => {
     setOffset(0);
     fetch(
-      `http://10.58.3.182:8000/projects?&limit=${LIMIT}&offset=${
+      `${API.PROJECTS}?&limit=${LIMIT}&offset=${
         LIMIT * offset
       }&${filterList.join('&')}`
     )
@@ -75,7 +74,7 @@ const List = () => {
     ]);
   }, [date]);
   window.onscroll = () => {
-    window.innerHeight + document.documentElement.scrollTop >
+    window.innerHeight + document.documentElement.scrollTop >=
       document.documentElement.scrollHeight && setOffset(prev => prev + 1);
   };
 
@@ -116,7 +115,6 @@ const List = () => {
     e.target === e.currentTarget && setIsclickCalendar(false);
   };
 
-  console.log(card);
   // metaDataObj.stacks 들어오는 데이터가 없다면 "데이터가 없습니다 출력"
   if (!metaDataObj.stacks) return <>데이터가 없습니다</>;
 

@@ -51,20 +51,40 @@ const ProjectCarousel = ({ newProject, deadline }) => {
     <>
       <Title>🌟 신규 프로젝트</Title>
       <ProjectCarouselWrap>
-        <Slider {...option}>
-          {newProject.map(data => (
-            <Card key={data.project_id} data={data} />
-          ))}
-        </Slider>
+        {newProject.length < 4 ? (
+          <>
+            <CardWrapper>
+              {newProject.map(data => (
+                <Card key={data.project_id} data={data} />
+              ))}
+            </CardWrapper>
+          </>
+        ) : (
+          <Slider {...option}>
+            {newProject.map(data => (
+              <Card key={data.project_id} data={data} />
+            ))}
+          </Slider>
+        )}
       </ProjectCarouselWrap>
 
       <Title>🚨 마감임박</Title>
       <ProjectCarouselWrap>
-        <Slider {...option}>
-          {deadline.map(data => (
-            <Card key={data.project_id} data={data} />
-          ))}
-        </Slider>
+        {deadline.length < 4 ? (
+          <>
+            <CardWrapper>
+              {deadline.map(data => (
+                <Card key={data.project_id} data={data} />
+              ))}
+            </CardWrapper>
+          </>
+        ) : (
+          <Slider {...option}>
+            {deadline.map(data => (
+              <Card key={data.project_id} data={data} />
+            ))}
+          </Slider>
+        )}
       </ProjectCarouselWrap>
     </>
   );
@@ -124,6 +144,10 @@ const PrevArrow = styled(NextArrow)`
   &::before {
     content: '<';
   }
+`;
+
+const CardWrapper = styled.div`
+  display: flex;
 `;
 
 export default ProjectCarousel;

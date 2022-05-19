@@ -47,8 +47,6 @@ const CreateProject = () => {
 
   const [defaultThumbnail, setDefaultThumbnail] = useState(false);
 
-  console.log(defaultThumbnail);
-
   const fileRef = useRef();
   const [preview, setPreview] = useState();
 
@@ -147,7 +145,7 @@ const CreateProject = () => {
     try {
       const response = await fetch(`${API.PROJECTS}/enrollment`, {
         method: 'POST',
-        // headers: { Authorization: `${localStorage.getItem('token')}` },
+        headers: { Authorization: localStorage.getItem('token') },
         body: JSON.stringify({
           image_url: imgUrl,
           project_category_id: category,

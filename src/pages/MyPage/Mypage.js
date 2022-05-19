@@ -5,6 +5,7 @@ import PortfolioWrapper from './PortfolioWrapper';
 import StackWrapper from './StackWrapper';
 import GitHubWrapper from './GitHubWrapper';
 import Card from '../../components/Card/Card';
+import { API } from '../../config';
 
 const Mypage = () => {
   const [userInfo, setUserInfo] = useState({
@@ -28,23 +29,29 @@ const Mypage = () => {
   let isValid = !!postData.github_repo_url && !!postData.portfolio_file_url;
 
   useEffect(() => {
-    fetch('http://10.58.3.182:8000/projects?apply_status_id=2')
-      .then(res => res.json())
-      .then(res => setProjectList(prev => ({ ...prev, create: res.results })));
-
-    fetch('http://10.58.3.182:8000/projects?apply_status_id=1')
-      .then(res => res.json())
-      .then(res => setProjectList(prev => ({ ...prev, request: res.results })));
-
-    fetch('http://10.58.6.119:8000/users/detail', {
+    fetch(`${API.PROJECTS}?apply_status_id=2`, {
       headers: { Authorization: localStorage.getItem('token') },
     })
       .then(res => res.json())
-      .then(res => setUserInfo(res.RESULT[0]));
+      .then(res => setProjectList(prev => ({ ...prev, create: res.results })));
+
+    fetch(`${API.PROJECTS}?apply_status_id=1`, {
+      headers: { Authorization: localStorage.getItem('token') },
+    })
+      .then(res => res.json())
+      .then(res => setProjectList(prev => ({ ...prev, request: res.results })));
+
+    fetch(`${API.USERS}/detail`, {
+      headers: { Authorization: localStorage.getItem('token') },
+    })
+      .then(res => res.json())
+      .then(res => {
+        setUserInfo(res.results[0]);
+      });
   }, []);
 
   const uploadData = () => {
-    fetch(`http://10.58.6.119:8000/users/detail`, {
+    fetch(`${API.USERS}/detail`, {
       method: 'PATCH',
       headers: {
         Authorization: localStorage.getItem('token'),
