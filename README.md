@@ -1,83 +1,81 @@
-#2차 프로젝트 4팀 FrontEnd 소개
-
-- 숨고 클론 프로젝트
-
-- 해당페이지를 다시 기획하여 숨은 고수를 찾아주는 페이지가 아닌
+# ► 개고수덜(GGSD)팀
+- 개발자들의 고민과 수고를 덜어주는 사이트
+- 숨고페이지를 다시 기획하여 숨은 고수를 찾아주는 페이지가 아닌
   개발자들끼리 프로젝트를 매칭해주는 페이지로 기획 변경해보았습니다.
 
-# 개발 인원 및 기간
+## ► 개발 인원 및 기간
 
-- 개발기간 : 2022/05/09 ~ 2022/05/20
-- 개발인원 : 
+- __개발기간__ : 2022/05/09 ~ 2022/05/20
+- __개발인원__ : [[FE]](https://github.com/wecode-bootcamp-korea/32-2nd-GGSD-frontend) 정덕우, 최승이, 이하영, 이희준  //  [[BE]](https://github.com/wecode-bootcamp-korea/32-2nd-GGSD-backend) 지기성, 임수연
  
-- 프론트엔드 - 이희준, 최승이, 이하영, 정덕우
-- 백엔드 - 지기성,임수연
 
-# 사용기술
 
-- FrontEnd : React.js, React Router, Style Component, React Library
-- 협업 툴 : Git, Trello, Slack, Notion
+## ► 사용기술
 
-# 구현기능
+### 📍기술스택
+<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black"> <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black"> <img src="https://img.shields.io/badge/react router-CA4245?style=for-the-badge&logo=react router&logoColor=black"> <img src="https://img.shields.io/badge/styled component-4A154B?style=for-the-badge&logo=styled components&logoColor=black">  
 
-- 소셜 로그인 기능 (카카오)
-- 메인페이지 : 캐러셀
-- 리스트페이지 : 필터링 기능 , 무한스크롤 기능
-- 프로젝트 생성페이지 : 폼데이터 전송 기능
-- 마이페이지 : 사진 백엔드로 전송 및 백엔드에서 받아서 활용
+### 📍협업 툴
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"> <img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 
-# Reference
+## ► 기획 & 구현
 
-- 이 프로젝트는 숨고 사이트를 참조하여 학습목적으로 만들었습니다.
-- 실무수준의 프로젝트이지만 학습용으로 만들었기 때문에 이 코드를 활용하여 이득을 취하거나 무단 배포할 경우 법적으로 문제될 수 있습니다.
+### 1. metadata 
 
-# 내가 맡은 부분
+<img width="700" alt="meta data view" src="https://user-images.githubusercontent.com/89971435/169652820-5c771cf7-dc0f-47d5-94a7-07211917fba8.png">
 
-## 프로젝트 리스트 페이지 (무한스크롤 기능)
+- 변할 수 있는 값들을 메타데이터에서 찾아서 자동으로 데이터값이 적용
+- 백엔드와 함께 소통하는 과정에서 인간의존성을 줄임
+
+
+### 2. 이미지 직접 업로드(S3)
+
+<img width="700" alt="S3 사용 이유" src="https://user-images.githubusercontent.com/89971435/169653649-1ca7947a-8e45-4883-9413-dbe107ccce05.png">
+- local의 Resource를 직접 업로드 생성된 Uri 이용
+
+
+## ► 기능 구현 및 시연영상
+### 1. 소셜 로그인 기능
+
+- 카카오 API 
+
+https://user-images.githubusercontent.com/98532217/169686342-833df33c-d28c-44d6-abdc-e51ea1dfc194.mp4
+
+- 사용자 정보 초기세팅 모달창
+- 유효성검사 (기수 값에는 number 만 입력, 이름 값에는 text, 포지션 값은 metadata 활용)
+- 모든 값 입력시 서버로 전송
+
+https://user-images.githubusercontent.com/98532217/169686162-89ab645f-b5e0-4616-906f-b778529967c3.mp4
+
+### 2. 메인페이지 : 캐러셀 
+- 리액트 라이브러리 캐러셀 사용
+- nextArrow , prevArrow 스타일 변경
+
+https://user-images.githubusercontent.com/98532217/169685942-e8af90b0-f36d-4356-8f9d-f2459ba8bbc6.mp4
+
+### 3. 리스트페이지 : 필터링 기능, 무한스크롤 기능
+- 라이브러리 사용 x scroll이벤트 활용한 무한스크롤기능
 
 https://user-images.githubusercontent.com/94230809/169644499-b3417ddd-6dc6-40b8-ae58-7b97fe6ff139.mp4
 
 
-1. 라이브러리 사용 x scroll이벤트 활용한 무한스크롤기능
+### 4. 프로젝트 생성페이지 : formdata 전송 기능
+- 기본이미지 체크하면 서버에 저장되어 있는 기본이미지로 저장
+- 로컬에 Resource 를 직접 업로드, 마지막으로 업로드한 사진으로 서버에 전송
+- 버튼 클릭이벤트로 제출하면 모든 데이터 값(이미지 포함)이 서버로 전송
+
+https://user-images.githubusercontent.com/98532217/169688264-427acc00-e243-417e-b32b-c65be45aca8c.mp4
+
+### 5. 마이페이지 : 사진 서버로 전송 및 서버에서 받아서 활용
+- S3이용하여 사진 파일 업로드
+
+https://user-images.githubusercontent.com/98532217/169702443-74b3e822-dbba-4506-8a7a-e656c9ea5460.mp4
 
 
-<img width="500" alt="스크린샷 2022-05-21 오후 6 09 09" src="https://user-images.githubusercontent.com/94230809/169644569-c9e78406-e4da-4b27-8b3c-f0440102d07f.png">
+### Reference
 
-window 스크롤이벤트 활용하여 window.innerHeight (window의 높이 쉽게 말해 화면에 보여지는 스크롤의 길이만큼이 window의 높이이다.) + document.documentElement.scrollTop(스크롤의 가장 위 꼭짓점의 위치) 가 document.documentElement.scrollHeight (스크롤된 길이) 보다 크거나 같으면 (이 말인 즉 스크롤이 바닥에 닿았을때 라는 말과 같다.) state값을 1씩 증가시키는 함수를 만들고 데이터를 받아오는 useEffct 의존성 배열에 state값을 넣어줬습니다.
-
-
-2. limit 값을 보여주고싶은 수 만큼 상수데이터로 지정해놓은 후 offset 이 1씩 증가될때
-
-<img width="500" alt="스크린샷 2022-05-21 오후 6 11 10" src="https://user-images.githubusercontent.com/94230809/169644663-794ee972-9e2f-4c89-b0c0-4a0314556b29.png">
+- 이 프로젝트는 숨고 사이트를 참조하여 학습목적으로 만들었습니다.
+- 실무수준의 프로젝트이지만 학습용으로 만들었기 때문에 이 코드를 활용하여 이득을 취하거나 무단 배포할 경우 법적으로 문제될 수 있습니다.
 
 
-
-이런 방식으로 바닥에 닿을때 state값을 1씩 증가시켜 기존가지고 있는 데이터에 8개씩 추가하는 방식으로 구현하였습니다.)
-
-
-## 프로젝트 리스트 페이지 (다중필터 기능)
-
-https://user-images.githubusercontent.com/94230809/169645119-a72e9247-2e7e-4359-80d9-526b4c1a3537.mp4
-
-
-다중필터 (스택 , 장소 , 기간 , 카테고리)
-
-1. 스택 , 장소 , 카테고리 버튼 클릭시 하나의 배열에 담고, 버튼 클릭시 해당 배열안에 중복된 값이 있다면 그 값을 배열에서 걸러낸다.
-2. 스택 , 장소 , 카테고리 버튼 마다 배열안에 같은값이 있으면 제거하고 없다면 배열안에 추가하는 함수를 넣어줬습니다.
-위와 같은 동작이 일어날 때 스택 및 카테고리는 다중선택이되어야하고 장소 및 기간은 하나만 선택 되어야하므로 스택 및 카테고리는 처음에 짠 로직이 아래와같은 로직이였다.
-
-<img width="500" alt="168982481-8eccf14a-4bac-493c-940b-eda27c74ebdc" src="https://user-images.githubusercontent.com/94230809/169645159-0c2a2c4a-58c0-4696-968a-1748b52af938.png">
-
-하지만 두 함수모두 같은 로직이므로 아래와 같은 하나의 함수로 통합시켜주었다.
-
-<img width="662" alt="168983112-40d6c620-40eb-46f9-ab62-9ab82a2ce945" src="https://user-images.githubusercontent.com/94230809/169645178-93f4d7c2-44fb-4bec-82cf-4e1762cd572c.png">
-
-
-## 좋았던 점
-
-- 1차프로젝트에서 다뤄보지 못했던 기능을 다뤄봤고 라이브러리 사용(캘린더)을 해본점이 좋았다.
-- 모르는게 생기거나 기능적 이슈가 발했을때 서로의 도움으로 문제를 해결할 수 있었다.
-- 매일 아침 스탠드업미팅의 중요성을 다시한번 깨달았다. 매일 진행상황과 블로커를 매일 공유함으로써 발생되는 문제들을 미리 막을 수 있었다.
-- 다시한번 느끼는 소통의 중요성 프론트 와 백엔드의 원활한 소통없이는 200을 볼수 없다. 만약 500이 뜨더라도 탓을 하는것이 아닌 서로가 서로에게 맞추는 방향으로 진행된 프로젝트여서
-너무 감사했다.
 
